@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
@@ -540,6 +541,8 @@ async function startServer(): Promise<void> {
     res.json({ ok: true });
   });
 
+  const httpServer = http.createServer(app);
+
   // Frontend serving (Vite dev middleware in dev, static dist in production)
   if (process.env.NODE_ENV === 'production') {
     const distPath = path.resolve(process.cwd(), 'dist');
@@ -550,13 +553,16 @@ async function startServer(): Promise<void> {
   } else {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: { server: httpServer },
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
+  httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`StoreLens server listening on http://0.0.0.0:${PORT}`);
   });
 }
