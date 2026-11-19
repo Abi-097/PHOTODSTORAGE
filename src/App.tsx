@@ -16,8 +16,10 @@ import {
 } from 'lucide-react';
 import { CameraModal } from './components/CameraModal';
 import { LoginScreen } from './components/LoginScreen';
+import { OfflineIndicator } from './components/OfflineIndicator';
 import { PhotoCard } from './components/PhotoCard';
 import { PhotoLightbox } from './components/PhotoLightbox';
+import { PWAInstallButton } from './components/PWAInstallButton';
 import type { FolderSummary, PhotoItem } from './types';
 import {
   clearStoredToken,
@@ -578,16 +580,19 @@ export default function App() {
             )}
           </div>
 
-          {/* Connect Mobile & PC URL Helper */}
-          <div className="p-4 border-t border-slate-200 bg-white">
-            <p className="text-xs font-semibold text-slate-900">Same URL for Mobile &amp; PC</p>
-            <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-              Open this app URL on mobile to snap photos and download them on your PC.
-            </p>
+          {/* Connect Mobile & PC URL Helper & PWA Install */}
+          <div className="p-4 border-t border-slate-200 bg-white space-y-2.5">
+            <div>
+              <p className="text-xs font-semibold text-slate-900">Install &amp; Sync (Mobile &amp; PC)</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                Install this app on Android &amp; PC or copy the URL to connect both devices.
+              </p>
+            </div>
+            <PWAInstallButton variant="primary" fullWidth />
             <button
               type="button"
               onClick={handleCopyShareUrl}
-              className="mt-2.5 w-full min-h-[40px] px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="w-full min-h-[40px] px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedUrl ? (
                 <>
@@ -891,6 +896,8 @@ export default function App() {
           onClose={() => setLightboxIndex(null)}
         />
       )}
+
+      <OfflineIndicator />
     </div>
   );
 }

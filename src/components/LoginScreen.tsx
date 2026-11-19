@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Camera, Eye, EyeOff, Lock, User } from 'lucide-react';
+import { OfflineIndicator } from './OfflineIndicator';
+import { PWAInstallButton } from './PWAInstallButton';
 import { loginWithCredentials } from '../utils/api';
 
 interface LoginScreenProps {
@@ -114,7 +116,12 @@ export function LoginScreen({ onSuccess }: LoginScreenProps) {
         <p className="mt-5 pt-4 border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
           Open this same URL on both mobile and PC using your store credentials to sync captured photos instantly.
         </p>
+
+        <div className="mt-3">
+          <PWAInstallButton variant="subtle" fullWidth />
+        </div>
       </div>
+      <OfflineIndicator />
     </div>
   );
 }
