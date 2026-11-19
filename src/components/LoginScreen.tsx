@@ -43,7 +43,7 @@ export function LoginScreen({ onSuccess }: LoginScreenProps) {
             <Camera className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">StoreLens</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">SB</h1>
             <p className="text-sm text-slate-500">Mobile capture &amp; PC folder sync</p>
           </div>
         </div>
