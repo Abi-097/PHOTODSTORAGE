@@ -1,0 +1,6 @@
+{
+  "name": "StoreLens",
+  "description": "Cross-device store photo capture, visually lossless compression, folder organization, and instant PC download.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
