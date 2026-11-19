@@ -61,7 +61,7 @@ export function PhotoLightbox({
 
         <div className="flex items-center gap-2 shrink-0">
           <a
-            href={getPhotoDownloadUrl(photo.id, token)}
+            href={getPhotoDownloadUrl(photo.id, token, photo.localUrl)}
             download={photo.fileName}
             className="min-h-[40px] px-3.5 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold rounded-xl flex items-center gap-2 whitespace-nowrap transition-colors"
           >
@@ -92,7 +92,7 @@ export function PhotoLightbox({
       {/* Main Image Stage */}
       <div className="relative flex-1 flex items-center justify-center p-4 overflow-hidden">
         <img
-          src={getPhotoViewUrl(photo.id, token)}
+          src={getPhotoViewUrl(photo.id, token, photo.localUrl)}
           alt={photo.fileName}
           referrerPolicy="no-referrer"
           className="max-w-full max-h-full object-contain rounded-lg"

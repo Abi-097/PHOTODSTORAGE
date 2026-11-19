@@ -7,6 +7,7 @@ export interface FolderSummary {
   totalCompressedBytes: number;
   totalOriginalBytes: number;
   coverPhotoId: string | null;
+  coverLocalUrl?: string | null;
 }
 
 export interface PhotoItem {
@@ -20,6 +21,7 @@ export interface PhotoItem {
   height: number;
   qualityLabel: string;
   createdAt: string;
+  localUrl?: string;
 }
 
 export type CompressionPreset = 'lossless_92' | 'ultra_95' | 'compact_85';

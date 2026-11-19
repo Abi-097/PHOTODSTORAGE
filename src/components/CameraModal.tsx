@@ -26,6 +26,7 @@ interface CapturedSessionItem {
   originalSize: number;
   compressedSize: number;
   savedPercent: number;
+  localUrl?: string;
 }
 
 export function CameraModal({
@@ -126,6 +127,7 @@ export function CameraModal({
         originalSize: saved.originalSize,
         compressedSize: saved.compressedSize,
         savedPercent: compressed.savedPercent,
+        localUrl: saved.localUrl,
       },
       ...prev,
     ]);
@@ -329,7 +331,7 @@ export function CameraModal({
                 className="flex items-center gap-2 text-left group cursor-pointer"
               >
                 <img
-                  src={getPhotoViewUrl(lastPhoto.id, token)}
+                  src={getPhotoViewUrl(lastPhoto.id, token, lastPhoto.localUrl)}
                   alt={lastPhoto.fileName}
                   referrerPolicy="no-referrer"
                   className="w-11 h-11 rounded-lg object-cover border border-white/25 shrink-0"

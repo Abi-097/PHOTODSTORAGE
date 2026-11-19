@@ -26,11 +26,12 @@ import {
   createFolder,
   deleteFolder,
   deletePhoto,
+  downloadFolderZipBlob,
   fetchFolderPhotos,
   fetchFolders,
-  getFolderZipDownloadUrl,
   getPhotoViewUrl,
   getStoredToken,
+  isLocalSessionToken,
   renameFolder,
   setStoredToken,
   uploadCompressedPhoto,
@@ -173,7 +174,7 @@ export default function App() {
 
   // Real-time SSE sync so Mobile captures appear immediately on PC
   useEffect(() => {
-    if (!token || authChecking) return;
+    if (!token || authChecking || isLocalSessionToken(token)) return;
     const es = new EventSource(`/api/events?token=${encodeURIComponent(token)}`);
 
     const handleSync = (evt: MessageEvent) => {
@@ -319,20 +320,7 @@ export default function App() {
     setDownloadingFolderId(folder.id);
     setBannerError(null);
     try {
-      const res = await fetch(getFolderZipDownloadUrl(folder.id, token), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) {
-        let msg = `Download failed (${res.status})`;
-        try {
-          const data = (await res.json()) as { error?: string };
-          if (data?.error) msg = data.error;
-        } catch {
-          // ignore
-        }
-        throw new Error(msg);
-      }
-      const blob = await res.blob();
+      const blob = await downloadFolderZipBlob(token, folder.id);
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       const safeName = folder.name.replace(/[^a-zA-Z0-9._-]/g, '_') || 'folder';
@@ -538,7 +526,7 @@ export default function App() {
                     >
                       {folder.coverPhotoId ? (
                         <img
-                          src={getPhotoViewUrl(folder.coverPhotoId, token)}
+                          src={getPhotoViewUrl(folder.coverPhotoId, token, folder.coverLocalUrl ?? undefined)}
                           alt=""
                           referrerPolicy="no-referrer"
                           className="w-11 h-11 rounded-lg object-cover border border-slate-200 shrink-0"
@@ -585,7 +573,9 @@ export default function App() {
             <div>
               <p className="text-xs font-semibold text-slate-900">Install &amp; Sync (Mobile &amp; PC)</p>
               <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                Install this app on Android &amp; PC or copy the URL to connect both devices.
+                {isLocalSessionToken(token)
+                  ? 'Saved locally on this device (no sync backend at this URL). Use the active server URL for Mobile to PC sync.'
+                  : 'Install this app on Android & PC or copy the URL to connect both devices.'}
               </p>
             </div>
             <PWAInstallButton variant="primary" fullWidth />

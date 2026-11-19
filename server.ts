@@ -541,6 +541,10 @@ async function startServer(): Promise<void> {
     res.json({ ok: true });
   });
 
+  app.use('/api', (_req, res) => {
+    res.status(404).json({ error: 'API route not found.' });
+  });
+
   const httpServer = http.createServer(app);
 
   // Frontend serving (Vite dev middleware in dev, static dist in production)

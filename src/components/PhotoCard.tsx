@@ -29,7 +29,7 @@ export function PhotoCard({ photo, token, onOpen, onDelete }: PhotoCardProps) {
       >
         {!imgFailed ? (
           <img
-            src={getPhotoViewUrl(photo.id, token)}
+            src={getPhotoViewUrl(photo.id, token, photo.localUrl)}
             alt={photo.fileName}
             loading="lazy"
             referrerPolicy="no-referrer"
@@ -58,7 +58,7 @@ export function PhotoCard({ photo, token, onOpen, onDelete }: PhotoCardProps) {
 
         <div className="flex items-center gap-1 shrink-0">
           <a
-            href={getPhotoDownloadUrl(photo.id, token)}
+            href={getPhotoDownloadUrl(photo.id, token, photo.localUrl)}
             download={photo.fileName}
             aria-label={`Download ${photo.fileName}`}
             title="Download photo to device"
